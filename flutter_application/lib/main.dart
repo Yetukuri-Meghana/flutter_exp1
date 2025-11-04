@@ -6,168 +6,207 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Library Information',
-      theme: ThemeData(
-        primarySwatch: Colors.grey,
-      ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'Library Information',
-            style: TextStyle(fontSize: 20, letterSpacing: 1.5),
-          ),
-          backgroundColor: Colors.black,
-        ),
-        body: ListView(
-          children: const [
-            LibraryListItem(
-              title: 'Central Library',
-              subtitle:
-                  'Largest collection: ~120,000 titles • Open: 8:00 AM - 8:00 PM',
-              imageUrl:
-                  'https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1200&q=80',
-            ),
-            LibraryListItem(
-              title: 'Digital Resources',
-              subtitle:
-                  'Access e-books, journals, and databases • Remote login available',
-              imageUrl:
-                  'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1200&q=80',
-            ),
-            LibraryListItem(
-              title: 'Reading Room',
-              subtitle:
-                  'Quiet study area with 150 seats • Wi-Fi & power outlets available',
-              imageUrl:
-                  'https://cdn.prod.website-files.com/604a97c70aee09eed25ce991/61897a35583a9b51db018d3e_MartinPublicSeating-97560-Importance-School-Library-blogbanner1.jpg',
-            ),
-            LibraryListItem(
-              title: 'Children\'s Section',
-              subtitle:
-                  'Picture books, storytelling sessions, and interactive area',
-              imageUrl:
-                  'https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=1200&q=80',
-            ),
-            LibraryListItem(
-              title: 'Research Journals',
-              subtitle:
-                  'Print & online journals across CS, Engineering, Sciences, Arts',
-              imageUrl:
-                  'https://images.unsplash.com/photo-1590608897129-79da98d15943?auto=format&fit=crop&w=1200&q=80',
-            ),
-            LibraryListItem(
-              title: 'Book Lending',
-              subtitle:
-                  'Member lending: up to 6 books for 21 days • Renewals allowed',
-              imageUrl:
-                  'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1200&q=80',
-            ),
-          ],
-        ),
-      ),
+      title: 'Library Info Page',
+      debugShowCheckedModeBanner: false,
+      home: const LibraryInfoPage(),
     );
   }
 }
 
-class LibraryListItem extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final String imageUrl;
-
-  const LibraryListItem({
-    super.key,
-    required this.title,
-    required this.subtitle,
-    required this.imageUrl,
-  });
+class LibraryInfoPage extends StatelessWidget {
+  const LibraryInfoPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: const BorderSide(color: Colors.grey, width: 0.5),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Library Information'),
+        backgroundColor: Colors.teal,
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.info_outline),
+            tooltip: 'About',
+          )
+        ],
       ),
-      elevation: 1,
-      color: Colors.white,
-      margin: const EdgeInsets.all(8),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Container(
-                color: Colors.grey[200],
-                width: 120,
-                height: 120,
-                child: Image.network(
-                  imageUrl,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      color: Colors.grey[300],
-                      child: const Center(
-                        child: Icon(Icons.library_books, size: 40),
-                      ),
-                    );
-                  },
+            const Center(
+              child: Text(
+                'Welcome to the Library!',
+                style: TextStyle(
+                  color: Colors.teal,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-            const SizedBox(width: 12),
-            Expanded(
+            const SizedBox(height: 12),
+
+            // Top row: user icon, contact icon, login button
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Column(
+                  children: const [
+                    Icon(Icons.person, size: 36),
+                    SizedBox(height: 6),
+                    Text('Members')
+                  ],
+                ),
+                Column(
+                  children: const [
+                    Icon(Icons.phone, size: 36),
+                    SizedBox(height: 6),
+                    Text('Contact')
+                  ],
+                ),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    // implement login/navigation in future
+                  },
+                  icon: const Icon(Icons.login),
+                  label: const Text('Member Login'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.teal,
+                    foregroundColor: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 16),
+
+            // Search field
+            TextField(
+              decoration: InputDecoration(
+                hintText: 'Search books, authors, ISBN...',
+                prefixIcon: const Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                contentPadding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            // Library image
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.network(
+                // placeholder library image (random)
+                'https://cdn.prod.website-files.com/604a97c70aee09eed25ce991/61897a35583a9b51db018d3e_MartinPublicSeating-97560-Importance-School-Library-blogbanner1.jpg',
+                height: 180,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+            ),
+
+            const SizedBox(height: 18),
+
+            // Opening hours card
+            Card(
+              elevation: 2,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8)),
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text(
+                      'Opening Hours',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 8),
+                    Text('Mon - Fri: 08:00 AM - 08:00 PM'),
+                    Text('Saturday: 09:00 AM - 05:00 PM'),
+                    Text('Sunday: Closed'),
+                  ],
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 14),
+
+            // Featured books (ListTiles)
+            const Text(
+              'Featured Books',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+
+            Card(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    softWrap: true,
+                children: const [
+                  ListTile(
+                    leading: Icon(Icons.book),
+                    title: Text('Introduction to Algorithms'),
+                    subtitle: Text('Cormen, Leiserson, Rivest, Stein'),
+                    trailing: Icon(Icons.keyboard_arrow_right),
                   ),
-                  const SizedBox(height: 10),
-                  Text(
-                    subtitle,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: Colors.black87,
-                    ),
+                  Divider(height: 1),
+                  ListTile(
+                    leading: Icon(Icons.menu_book),
+                    title: Text('Clean Code'),
+                    subtitle: Text('Robert C. Martin'),
+                    trailing: Icon(Icons.keyboard_arrow_right),
                   ),
-                  const SizedBox(height: 12),
-                  Row(
-                    children: [
-                      ElevatedButton.icon(
-                        onPressed: () {},
-                        icon: const Icon(Icons.info_outline),
-                        label: const Text('Details'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.black,
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 10),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      OutlinedButton.icon(
-                        onPressed: () {},
-                        icon: const Icon(Icons.location_on_outlined),
-                        label: const Text('Location'),
-                        style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 10),
-                        ),
-                      ),
-                    ],
+                  Divider(height: 1),
+                  ListTile(
+                    leading: Icon(Icons.library_books),
+                    title: Text('The Pragmatic Programmer'),
+                    subtitle: Text('Andrew Hunt, David Thomas'),
+                    trailing: Icon(Icons.keyboard_arrow_right),
                   ),
                 ],
+              ),
+            ),
+
+            const SizedBox(height: 18),
+
+            // Contact / Address
+            const Text(
+              'Contact & Address',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.teal.shade50,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                children: const [
+                  Icon(Icons.location_on),
+                  SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      '123 Library Lane, Knowledge City\nPhone: +91 98765 43210\nEmail: info@library.example',
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 24),
+
+            // Small footer
+            Center(
+              child: Text(
+                '© ${DateTime.now().year} Your Library Name',
+                style: const TextStyle(color: Colors.grey),
               ),
             ),
           ],
